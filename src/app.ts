@@ -4,7 +4,7 @@ const launch = async () => {
     const browser = await puppeteer.launch({
         headless: false,
         userDataDir: "browser_data",
-        args: ['--no-sandbox']
+        args: ['--no-sandbox', '--auto-open-devtools-for-tabs']
     });
 
     const page = await browser.newPage();
@@ -27,7 +27,7 @@ const launch = async () => {
         await page.addScriptTag({path: './haxball/bundle.js'});
     });
 
-    page.on('close', ()=>{console.log("Haxball page closed")});
+    page.on('close', () => console.log("Haxball page closed"));
 };
 
 launch();
