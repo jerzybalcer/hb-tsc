@@ -19,7 +19,7 @@ const launch = async () => {
         browserify.add(haxballRoomPath + file);
     });
 
-    var bundleStream = await fileSystem.createWriteStream(__dirname + '/haxball/bundle.js');
+    const bundleStream = await fileSystem.createWriteStream(__dirname + '/haxball/bundle.js');
 
     browserify.bundle().pipe(bundleStream);
 
