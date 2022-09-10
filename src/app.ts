@@ -1,51 +1,14 @@
-import * as puppeteer from 'puppeteer';
+import { generateBrowserCompatibleBundle } from './bundleGenerator';
+import { Browser } from './browser';
 
-const launch = async () => {
-    const browser = await puppeteer.launch({
-        headless: false,
-        userDataDir: "browser_data",
-        args: ['--no-sandbox', '--auto-open-devtools-for-tabs']
-    });
+class App {
+    public static async start(){
+        const browser = await Browser.launch();
 
-    const page = await browser.newPage();
-    await page.goto('https://www.haxball.com/headless', {waitUntil: 'networkidle2'});
+        await generateBrowserCompatibleBundle();
 
-    const haxballRoomPath = './haxball/room/';
-    const browserify = require('browserify')();
+        await browser.addScript('./haxball/bundle.js');
+    }
+}
 
-    const fileSystem = require('fs');
-
-    fileSystem.readdirSync(haxballRoomPath).forEach(async (file: string) => {
-        browserify.add(haxballRoomPath + file);
-    });
-
-    const bundleStream = await fileSystem.createWriteStream(__dirname + '/haxball/bundle.js');
-
-    browserify.bundle().pipe(bundleStream);
-
-    bundleStream.on('finish', async () => {
-        await page.addScriptTag({path: './haxball/bundle.js'});
-    });
-
-    page.on('console', async msg => {
-        const args = msg.args()
-
-        args.forEach(async (arg) => {
-          const val = await arg.jsonValue()
-
-          if (JSON.stringify(val) !== JSON.stringify({}))
-          {
-            console.log(val)
-          } 
-          else 
-          {
-            const { description } = arg.remoteObject()
-            console.log(description)
-          }
-        })
-    });
-
-    page.on('close', () => console.log("Haxball page closed"));
-};
-
-launch();
+App.start();
