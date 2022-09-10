@@ -27,6 +27,24 @@ const launch = async () => {
         await page.addScriptTag({path: './haxball/bundle.js'});
     });
 
+    page.on('console', async msg => {
+        const args = msg.args()
+
+        args.forEach(async (arg) => {
+          const val = await arg.jsonValue()
+
+          if (JSON.stringify(val) !== JSON.stringify({}))
+          {
+            console.log(val)
+          } 
+          else 
+          {
+            const { description } = arg.remoteObject()
+            console.log(description)
+          }
+        })
+    });
+
     page.on('close', () => console.log("Haxball page closed"));
 };
 
