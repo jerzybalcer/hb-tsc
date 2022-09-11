@@ -1,16 +1,18 @@
+import * as fileSystem from 'fs';
+import * as browserify from 'browserify';
+
 export const generateBrowserCompatibleBundle = async() => {
     const haxballRoomPath = './haxball/room/';
-    const browserify = require('browserify')();
 
-    const fileSystem = require('fs');
+    const browserifyObject = new browserify.default;
 
     fileSystem.readdirSync(haxballRoomPath).forEach(async (file: string) => {
-        browserify.add(haxballRoomPath + file);
+        browserifyObject.add(haxballRoomPath + file);
     });
 
-    const bundleStream = await fileSystem.createWriteStream(__dirname + '/haxball/bundle.js');
+    const bundleStream = fileSystem.createWriteStream(__dirname + '/haxball/bundle.js');
 
-    browserify.bundle().pipe(bundleStream);
+    browserifyObject.bundle().pipe(bundleStream);
 
     return new Promise<void>(resolve => 
         bundleStream.on('finish', async () => {

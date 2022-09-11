@@ -8,6 +8,7 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
+    "@types/browserify": "^12.0.37",
     "browserify": "^17.0.0"
   }
 }

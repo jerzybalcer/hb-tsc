@@ -30,6 +30,10 @@ export class Browser {
         await this.page.addScriptTag({path: path});
     }
 
+    public async refreshPage(){
+        await this.page.reload({waitUntil: 'networkidle2'});
+    }
+
     private static async extractErrorFromConsole(message: puppeteer.ConsoleMessage){
         const args = message.args()
     
