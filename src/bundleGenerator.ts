@@ -1,10 +1,10 @@
 import * as fileSystem from 'fs';
-import * as browserify from 'browserify';
+import browserify from 'browserify';
 
 export const generateBrowserCompatibleBundle = async() => {
     const haxballRoomPath = './haxball/room/';
 
-    const browserifyObject = new browserify.default;
+    const browserifyObject = new browserify();
 
     fileSystem.readdirSync(haxballRoomPath).forEach(async (file: string) => {
         browserifyObject.add(haxballRoomPath + file);
