@@ -2,7 +2,7 @@
 
 Haxball headless room programming environment using TypeScript.
 
-Featuring automated deploy, hot reload on each code save and captcha token grabber assistant.
+Featuring automated deploy, hot reload on each code save and captcha token grabbing assistant.
 
 ## Quick start
 1. Install node modules with ```npm install```
